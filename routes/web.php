@@ -2,6 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', fn() => ['welcome']);
-
+Route::get('/', fn () => ['welcome']);

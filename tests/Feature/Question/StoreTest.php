@@ -2,8 +2,8 @@
 
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
-use function Pest\Laravel\postJson;
-use function Pest\Laravel\assertDatabaseHas;
+
+use function Pest\Laravel\{assertDatabaseHas, postJson};
 
 it('should be able to store a new question', function () {
     $user = User::factory()->create();
@@ -15,7 +15,7 @@ it('should be able to store a new question', function () {
     ]))->assertSuccessful();
 
     assertDatabaseHas('questions', [
-        'user_id' => $user->id,
+        'user_id'  => $user->id,
         'question' => 'Loren ipsum Jeremias?',
     ]);
 

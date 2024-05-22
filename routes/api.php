@@ -14,7 +14,7 @@ Route::get('/users', function () {
 });
 
 // region Authenticated
-Route::middleware('auth:sanctum')->group(function (){
+Route::middleware('auth:sanctum')->group(function () {
     // region Questions
     Route::post('questions', Question\StoreController::class)->name('questions.store');
 

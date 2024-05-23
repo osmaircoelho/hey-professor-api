@@ -1,6 +1,5 @@
 {
     "scripts": {
-        "prepare": "husky install",
         "postinstall":"husky install"
     },
 

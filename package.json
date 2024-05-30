@@ -1,8 +1,9 @@
 {
-  "devDependencies": {
-    "husky": "^8.0.3"
-  },
-  "scripts": {
-    "prepare": "husky install"
-  }
+    "scripts": {
+        "postinstall":"husky install"
+    },
+
+    "devDependencies": {
+        "husky": "^8.0.3"
+    }
 }

@@ -17,7 +17,6 @@ class UpdateController extends Controller
 
         $question->question = $request->question;
         $question->save();
-
         return QuestionResource::make($question);
     }
 }

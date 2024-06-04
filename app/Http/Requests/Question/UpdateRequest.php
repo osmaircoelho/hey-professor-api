@@ -18,7 +18,10 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        /** @var Question $question */
+        $question = $this->route()->question; # @phpstan-ignore-line
+
+        return Gate::allows('update', $question);
     }
 
     /**

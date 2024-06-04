@@ -82,3 +82,29 @@ describe('validation rules', function () {
     });
 });
 
+describe('security', function (){
+    test('only the person who create the question can update the same question', function (){
+
+        #cria dois usuarios
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        # usuario 1 criamos a pergunta, somente ele tem acesso a editar
+        $question = Question::factory()->create(['user_id' => $user1->id]);
+
+        # logamos na plataforma com usuario2
+        Sanctum::actingAs($user2);
+
+        # tentamos fazer a nossa atualizacao
+        # apresenta erro pois o usuario 2 esta logado
+        putJson(route('questions.update', $question), [
+           'question' => 'updating the question?'
+        ])->assertForbidden();
+
+        # id e question tem que ser iguais
+        assertDatabaseHas('questions', [
+           'id' => $question->id,
+           'question' => $question->question
+        ]);
+    });
+});

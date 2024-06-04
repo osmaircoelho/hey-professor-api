@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Question;
 
 use App\Models\Question;
-use App\Rules\{OnlyAsDraft, WithQuestionMark};
+use App\Rules\{WithQuestionMark};
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -39,7 +39,9 @@ class UpdateRequest extends FormRequest
                 'required',
                 new WithQuestionMark(),
                 'min:10',
-                 Rule::unique('questions')->ignoreModel($question),
+                'required', new WithQuestionMark(),
+                'min:10',
+                Rule::unique('questions')->ignoreModel($question),
             ],
         ];
     }

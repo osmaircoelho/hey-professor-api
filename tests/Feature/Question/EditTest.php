@@ -3,13 +3,13 @@
 use App\Models\{Question, User};
 use Laravel\Sanctum\Sanctum;
 
-use function Pest\Laravel\{assertDatabaseHas, postJson, putJson};
+use function Pest\Laravel\{assertDatabaseHas, putJson};
 
 it('should be able to update a question', function () {
 
     $user = User::factory()->create();
 
-    $question = Question::factory()->create(['user_id'=>$user->id]);
+    $question = Question::factory()->create(['user_id' => $user->id]);
 
     Sanctum::actingAs($user);
 
@@ -18,7 +18,7 @@ it('should be able to update a question', function () {
     ])->assertOk();
 
     assertDatabaseHas('questions', [
-        'id' => $question->id,
+        'id'       => $question->id,
         'user_id'  => $user->id,
         'question' => 'Updating a question?',
     ]);
@@ -27,33 +27,33 @@ it('should be able to update a question', function () {
 
 describe('validation rules', function () {
     test('question::required', function () {
-        $user = User::factory()->create();
+        $user     = User::factory()->create();
         $question = Question::factory()->create(['user_id' => $user->id]);
 
         Sanctum::actingAs($user);
 
         putJson(route('questions.update', $question), [
-            'question' => ''
+            'question' => '',
         ])->assertJsonValidationErrors([
-            'question' => 'required'
+            'question' => 'required',
         ]);
     });
 
     test('question::ending with question mark', function () {
-        $user = User::factory()->create();
+        $user     = User::factory()->create();
         $question = Question::factory()->create(['user_id' => $user->id]);
 
         Sanctum::actingAs($user);
 
         putJson(route('questions.update', $question), [
-            'question' => 'Question should have a mark'
+            'question' => 'Question should have a mark',
         ])->assertJsonValidationErrors([
-                'question' => 'The question should end with question mark (?).',
+            'question' => 'The question should end with question mark (?).',
         ]);
     });
 
     test('question::min characters should be 10', function () {
-        $user = User::factory()->create();
+        $user     = User::factory()->create();
         $question = Question::factory()->create(['user_id' => $user->id]);
 
         Sanctum::actingAs($user);
@@ -61,7 +61,7 @@ describe('validation rules', function () {
         putJson(route('questions.update', $question), [
             'question' => 'Question?',
         ])->assertJsonValidationErrors([
-                'question' => 'least 10 characters',
+            'question' => 'least 10 characters',
         ]);
     });
 
@@ -82,8 +82,8 @@ describe('validation rules', function () {
     });
 });
 
-describe('security', function (){
-    test('only the person who create the question can update the same question', function (){
+describe('security', function () {
+    test('only the person who create the question can update the same question', function () {
 
         #cria dois usuarios
         $user1 = User::factory()->create();
@@ -107,4 +107,31 @@ describe('security', function (){
            'question' => $question->question
         ]);
     });
+});
+
+test('after creating we should return a status 200 with the created question', function () {
+    $user = User::factory()->create();
+    $question = Question::factory()->for($user, 'user')->create();
+
+    Sanctum::actingAs($user);
+
+    $request = putJson(route('questions.update', $question), [
+        'question' => 'Lorem ipsum jeremias?',
+    ])->assertOk();
+
+    $question = Question::latest()->first();
+
+    $request->assertJson([
+        'data' => [
+            'id'         => $question->id,
+            'question'   => $question->question,
+            'status'     => $question->status,
+            'created_by' => [
+                'id'   => $user->id,
+                'name' => $user->name,
+            ],
+            'created_at' => $question->created_at->format('Y-m-d h:i:s'),
+            'updated_at' => $question->updated_at->format('Y-m-d h:i:s'),
+        ],
+    ]);
 });

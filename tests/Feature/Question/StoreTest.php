@@ -21,7 +21,7 @@ it('should be able to store a new question', function () {
 
 });
 
-test('with the creatin of the question, we need to make sure that it creates w/ status _draft_ status', function () {
+test('with the creation of the question, we need to make sure that it creates w/ status _draft_ status', function () {
     $user = User::factory()->create();
 
     Sanctum::actingAs($user);

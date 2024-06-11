@@ -17,6 +17,7 @@ Route::get('/users', function () {
 Route::middleware('auth:sanctum')->group(function () {
     // region Questions
     Route::post('questions', Question\StoreController::class)->name('questions.store');
+    Route::put('questions/{question}', Question\UpdateController::class)->name('questions.update');
 
     // endregion
 });

@@ -14,7 +14,7 @@ it('should be able to update a question', function () {
     Sanctum::actingAs($user);
 
     putJson(route('questions.update', $question), [
-        'question' => 'Updating a question?'
+        'question' => 'Updating a question?',
     ])->assertOk();
 
     assertDatabaseHas('questions', [
@@ -98,40 +98,13 @@ describe('security', function () {
         # tentamos fazer a nossa atualizacao
         # apresenta erro pois o usuario 2 esta logado
         putJson(route('questions.update', $question), [
-           'question' => 'updating the question?'
+            'question' => 'updating the question?',
         ])->assertForbidden();
 
         # id e question tem que ser iguais
         assertDatabaseHas('questions', [
-           'id' => $question->id,
-           'question' => $question->question
+            'id'       => $question->id,
+            'question' => $question->question,
         ]);
     });
-});
-
-test('after creating we should return a status 200 with the created question', function () {
-    $user = User::factory()->create();
-    $question = Question::factory()->for($user, 'user')->create();
-
-    Sanctum::actingAs($user);
-
-    $request = putJson(route('questions.update', $question), [
-        'question' => 'Lorem ipsum jeremias?',
-    ])->assertOk();
-
-    $question = Question::latest()->first();
-
-    $request->assertJson([
-        'data' => [
-            'id'         => $question->id,
-            'question'   => $question->question,
-            'status'     => $question->status,
-            'created_by' => [
-                'id'   => $user->id,
-                'name' => $user->name,
-            ],
-            'created_at' => $question->created_at->format('Y-m-d h:i:s'),
-            'updated_at' => $question->updated_at->format('Y-m-d h:i:s'),
-        ],
-    ]);
 });

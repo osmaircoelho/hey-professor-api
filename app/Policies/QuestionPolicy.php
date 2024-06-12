@@ -2,13 +2,16 @@
 
 namespace App\Policies;
 
-use App\Models\Question;
-use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\{Question, User};
 
 class QuestionPolicy
 {
     public function update(User $user, Question $question): bool
+    {
+        return $user->is($question->user);
+    }
+
+    public function forceDelete(User $user, Question $question): bool
     {
         return $user->is($question->user);
     }

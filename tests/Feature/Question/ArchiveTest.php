@@ -3,8 +3,7 @@
 use App\Models\{Question, User};
 use Laravel\Sanctum\Sanctum;
 
-use function Pest\Laravel\{assertDatabaseHas,
-    assertDatabaseMissing,
+use function Pest\Laravel\{
     assertNotSoftDeleted,
     assertSoftDeleted,
     deleteJson};

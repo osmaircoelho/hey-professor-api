@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Question;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/users', function () {
     return User::all();
 });
+
+Route::post('register', RegisterController::class)->name('register');
 
 // region Authenticated
 Route::middleware('auth:sanctum')->group(function () {

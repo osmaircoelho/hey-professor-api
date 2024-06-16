@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method static WhereEmail(string $string)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -42,7 +45,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-       // 'password'          => 'hashed',
+        // 'password'          => 'hashed',
     ];
 
     public function questions(): HasMany

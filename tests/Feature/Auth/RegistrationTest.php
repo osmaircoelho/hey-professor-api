@@ -24,7 +24,7 @@ it('should be able to register in the application', function () {
     );
 });
 
-/*it('should log the new user in the system', function () {
+it('should log the new user in the system', function () {
     postJson(route('register'), [
         'name'     => 'John Doe',
         'email'    => 'joe@doe.com',
@@ -34,7 +34,7 @@ it('should be able to register in the application', function () {
     $user = User::first();
 
     assertAuthenticatedAs($user);
-});*/
+});
 
 describe('validations', function () {
 

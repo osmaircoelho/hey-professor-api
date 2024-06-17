@@ -2,9 +2,7 @@
 
 use App\Models\User;
 
-use Illuminate\Support\Facades\Hash;
-
-use function Pest\Laravel\{assertDatabaseHas, postJson};
+use function Pest\Laravel\{assertAuthenticatedAs, assertDatabaseHas, postJson};
 use function PHPUnit\Framework\assertTrue;
 
 it('should be able to register in the application', function () {
@@ -26,6 +24,18 @@ it('should be able to register in the application', function () {
     );
 });
 
+/*it('should log the new user in the system', function () {
+    postJson(route('register'), [
+        'name'     => 'John Doe',
+        'email'    => 'joe@doe.com',
+        'password' => 'password',
+    ])->assertOk();
+
+    $user = User::first();
+
+    assertAuthenticatedAs($user);
+});*/
+
 describe('validations', function () {
 
     test('name', function ($rule, $value, $meta = []) {
@@ -42,10 +52,10 @@ describe('validations', function () {
         'max:255'  => ['max', str_repeat('*', 256), ['max' => 255]],
     ]);
 
-    /*test('name', function ($rule, $value, $meta = []) {
-        postJson(route('register'), ['name' => $value])
+    test('email', function ($rule, $value, $meta = []) {
+        postJson(route('register'), ['email' => $value])
             ->assertJsonValidationErrors([
-                'name' => __(
+                'email' => __(
                     'validation.' . $rule,
                     array_merge(['attribute' => 'email'], $meta)
                 ),
@@ -54,7 +64,7 @@ describe('validations', function () {
         'required' => ['required', ''],
         'min:3'    => ['min', 'AB', ['min' => 3]],
         'max:255'  => ['max', str_repeat('*', 256), ['max' => 255]],
-        'email'    => ['email' => ['not-email']],
-    ]);*/
+        'email'    => ['email', 'not-email'],
+    ]);
 
 });

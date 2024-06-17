@@ -11,11 +11,12 @@ class RegisterController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        $data = $request->validate([
-            'name'  => ['required', 'min:3', 'max:255'],
-            'email' => ['required', 'min:3', 'max:255', 'email'],
+        $data = request()->validate([
+            'name'     => ['required', 'min:3', 'max:255'],
+            'email'    => ['required', 'min:3', 'max:255', 'email'],
+            'password' => '',
         ]);
 
         User::create($data);

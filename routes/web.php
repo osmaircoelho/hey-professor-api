@@ -1,5 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\{LoginController, LogoutController, RegisterController};
 
-Route::get('/', fn () => ['What you doing here! 🤨']);
+Route::post('login', LoginController::class)->name('login');
+Route::post('register', RegisterController::class)->name('register');
+
+Route::post('logout', LogoutController::class)
+    ->middleware(['auth'])
+    ->name('logout');

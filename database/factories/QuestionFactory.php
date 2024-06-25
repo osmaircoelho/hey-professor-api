@@ -38,4 +38,11 @@ class QuestionFactory extends Factory
         ]);
     }
 
+    public function archived(): self
+    {
+        return $this->state(fn (array $attribute) => [
+            'deleted_at' => $this->faker->dateTime(),
+        ]);
+    }
+
 }

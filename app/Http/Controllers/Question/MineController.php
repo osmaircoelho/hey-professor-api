@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Question;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuestionResource;
-use App\Models\Question;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 
 class MineController extends Controller
@@ -18,9 +18,13 @@ class MineController extends Controller
             ['status' => ['required', 'status' => 'in:draft,published,archived']]
         );
 
-        $questions = Question::query()
-            ->whereUserId(auth()->id())
-            ->where('status', '=', $status)
+        $questions = user()
+            ->questions()
+            ->when(
+                $status == 'archived',
+                fn (Builder $q) => $q->onlyTrashed(), // @phpstan-ignore-line
+                fn (Builder $q) => $q->whereStatus($status) // @phpstan-ignore-line
+            )
             ->get();
 
         return QuestionResource::collection($questions);

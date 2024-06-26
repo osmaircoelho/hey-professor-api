@@ -17,15 +17,17 @@ class QuestionResource extends JsonResource
     {
         /** @var Question $this */
         return [
-            'id' => $this->id,
-            'question' => $this->question,
-            'status' => $this->status,
+            'id'         => $this->id,
+            'question'   => $this->question,
+            'status'     => $this->status,
             'created_by' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name
+                'id'   => $this->user->id,
+                'name' => $this->user->name,
             ],
-            'created_at' => $this->created_at->format('Y-m-d h:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d h:i:s'),
+            'votes_sum_like'   => $this->votes_sum_like ?: 0,
+            'votes_sum_unlike' => $this->votes_sum_unlike ?: 0,
+            'created_at'       => $this->created_at->format('Y-m-d h:i:s'),
+            'updated_at'       => $this->updated_at->format('Y-m-d h:i:s'),
         ];
     }
 }

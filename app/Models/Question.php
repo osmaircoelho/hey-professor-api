@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\{Builder, Model, Relations\HasMany, SoftDeletes};
 
+/**
+ * @property-read int $votes_sum_like
+ * @property-read int $votes_sum_unlike
+ */
 class Question extends Model
 {
     use HasFactory;

@@ -25,7 +25,7 @@ class MineController extends Controller
                 fn (Builder $q) => $q->onlyTrashed(), // @phpstan-ignore-line
                 fn (Builder $q) => $q->whereStatus($status) // @phpstan-ignore-line
             )
-            ->get();
+            ->paginate();
 
         return QuestionResource::collection($questions);
     }

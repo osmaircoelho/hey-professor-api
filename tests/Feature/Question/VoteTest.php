@@ -35,3 +35,26 @@ it('should be able to like a question', function () {
         'like'        => 1,
     ]);
 });
+
+it('should be able to unlike a question', function () {
+    #arrange
+    $user = createUserAndLogin();
+
+    $question = Question::factory()->published()->create();
+
+    postJson(
+        route('questions.vote', [
+            'question' => $question,
+            'vote'     => 'unlike',
+        ])
+    )->assertNoContent();
+
+    expect($question->votes)
+        ->toHaveCount(1);
+
+    assertDatabaseHas('votes', [
+        'question_id' => $question->id,
+        'user_id'     => $user->id,
+        'unlike'      => 1,
+    ]);
+});
